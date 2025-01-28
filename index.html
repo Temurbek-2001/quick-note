@@ -4,10 +4,42 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + React</title>
+    <link rel="manifest" href="manifest.json" />
+    <meta name="theme-color" content="#3b82f6" />
+    <title>Quick Notes</title>
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
+    <script>
+    // Service worker registration with update handling
+const registerServiceWorker = async () => {
+  if ('serviceWorker' in navigator) {
+    try {
+      const registration = await navigator.serviceWorker.register('/sw.js');
+      
+      // Check for updates
+      registration.addEventListener('updatefound', () => {
+        const newWorker = registration.installing;
+        newWorker.addEventListener('statechange', () => {
+          if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+            // New service worker available
+            if (confirm('New version available! Would you like to update?')) {
+              newWorker.postMessage({ type: 'SKIP_WAITING' });
+              window.location.reload();
+            }
+          }
+        });
+      });
+
+      console.log('ServiceWorker registration successful');
+    } catch (error) {
+      console.error('ServiceWorker registration failed:', error);
+    }
+  }
+};
+
+registerServiceWorker();
+</script>
   </body>
 </html>
