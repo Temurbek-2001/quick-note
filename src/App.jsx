@@ -209,45 +209,94 @@ const App = () => {
     );
   };
 
-   const SettingsPage = () => (
-    <div className="p-4">
-      <h1 className="text-3xl font-bold mb-6">Settings</h1>
-      <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-lg">
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-xl font-semibold dark:text-white">Dark Mode</h2>
-          <button
-            onClick={() => setIsDarkMode(!isDarkMode)}
-            className="bg-purple-500 text-white px-4 py-2 rounded-lg hover:bg-purple-600"
-          >
-            {isDarkMode ? 'Light Mode' : 'Dark Mode'}
-          </button>
-        </div>
-        
-        {/* Add the install button here */}
-        {installButtonVisible && (
-          <div className="mb-4">
+
+  const SettingsPage = () => {
+    const handleShareClick = async () => {
+      if (navigator.share) {
+        try {
+          await navigator.share({
+            title: "My Notes App",
+            text: "Check out this awesome notes app!",
+            url: window.location.href,
+          });
+          console.log("Shared successfully");
+        } catch (error) {
+          console.error("Error sharing:", error);
+        }
+      } else {
+        alert("Web Share API is not supported in your browser.");
+      }
+    };
+  
+    return (
+      <div className="p-6 min-h-screen">
+        <h1 className="text-4xl font-bold text-center mb-8 dark:text-blue">
+          Settings
+        </h1>
+        <div className="max-w-2xl mx-auto bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg">
+          {/* Image Section */}
+          <div className="flex justify-center mb-6">
+            <img
+              src="/icon-192x192.png"
+              alt="App Icon"
+              className="w-44 h-44  "
+            />
+          </div>
+  
+          {/* Informational Text */}
+          <h1 className="text-2xl text-center text-gray-600 dark:text-gray-300 mb-6">
+            Customize your experience and share it with friends!
+          </h1>
+  
+          {/* Buttons Section */}
+          <div className="flex justify-between items-center mb-6 gap-4">
+
             <button
-              onClick={handleInstallClick}
-              className="w-full bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600"
+              onClick={() => setIsDarkMode(!isDarkMode)}
+              className="w-full bg-purple-500 text-white px-4 py-2 rounded-lg hover:bg-purple-600 transition"
             >
-              Install App
+              {isDarkMode ? "Light Mode" : "Dark Mode"}
+            </button>
+  
+            {installButtonVisible && (
+              <button
+                onClick={handleInstallClick}
+                className="w-full bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition"
+              >
+                Install App
+              </button>
+            )}
+  
+            <button
+              onClick={handleShareClick}
+              className="w-full bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition"
+            >
+              Share App
             </button>
           </div>
-        )}
-
-        <h2 className="text-xl font-semibold mb-2 dark:text-white">App Information</h2>
-        <p className="text-gray-600 dark:text-gray-300">Version: 1.0.0</p>
-        <p className="text-gray-600 dark:text-gray-300">
-          Storage Used: {(JSON.stringify(notes).length / 1024).toFixed(2)} KB
-18 hours ago
-
-Initial commit
-        </p>
+  
+          {/* App Information Section */}
+          <div className="mt-6">
+            <h2 className="text-2xl font-semibold mb-4 dark:text-white">
+              App Information
+            </h2>
+            <div className="space-y-2">
+              <p className="text-gray-600 dark:text-gray-300">
+                <span className="font-semibold">Version:</span> 1.0.0
+              </p>
+              <p className="text-gray-600 dark:text-gray-300">
+                <span className="font-semibold">Storage Used:</span>{" "}
+                {(JSON.stringify(notes).length / 1024).toFixed(2)} KB
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
-9 hours ago
-Initial commit
-    </div>
-  );
+    );
+  };
+  
+  
+
 
   const renderCurrentPage = () => {
     switch (currentPage) {
