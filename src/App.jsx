@@ -209,6 +209,7 @@ const App = () => {
     );
   };
 
+
   const SettingsPage = () => {
     const handleShareClick = async () => {
       if (navigator.share) {
@@ -249,6 +250,7 @@ const App = () => {
   
           {/* Buttons Section */}
           <div className="flex justify-between items-center mb-6 gap-4">
+
             <button
               onClick={() => setIsDarkMode(!isDarkMode)}
               className="w-full bg-purple-500 text-white px-4 py-2 rounded-lg hover:bg-purple-600 transition"
@@ -294,6 +296,7 @@ const App = () => {
   };
   
   
+
 
   const renderCurrentPage = () => {
     switch (currentPage) {
